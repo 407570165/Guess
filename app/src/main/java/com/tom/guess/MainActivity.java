@@ -2,21 +2,17 @@ package com.tom.guess;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Random;
 
@@ -24,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     int secret =new Random().nextInt(10)+1;
     private EditText g;
     private TextView total;
+    private Button reset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         g = findViewById(R.id.guess);
         total = findViewById(R.id.result);
+        reset = findViewById(R.id.reset_bottun);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
@@ -50,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+    public void reset(View view){
+        secret =new Random().nextInt(10)+1;
+        g.setText("");
+        total.setText("");
+        reset.setVisibility(View.GONE);
+    }
     public void zero(View view){
         int i=0;
 
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
            total.setText("BIGGER");
        }else if (guess==secret){
             total.setText("BINGO");
+            reset.setVisibility(View.VISIBLE);
        }
     }
     @Override
