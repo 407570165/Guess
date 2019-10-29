@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText g;
     private TextView total;
     private Button reset;
+    private TextView counter;
+    int vacount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
         g = findViewById(R.id.guess);
         total = findViewById(R.id.result);
         reset = findViewById(R.id.reset_bottun);
+        counter = findViewById(R.id.count);
+        counter.setText(vacount+"");
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View view) {
-
             }
         });
     }
@@ -60,13 +64,28 @@ public class MainActivity extends AppCompatActivity {
     }
     public void turn(View view){
        int guess=Integer.parseInt(g.getText().toString());
+       total.setAlpha(1.0f);
+       vacount++;
+       counter.setText(vacount+"");
        if (guess>secret){
            total.setText("SMALLER");
+           total.setVisibility(View.VISIBLE);
+           total.animate().alpha(0.0f).setDuration(1200);
        }else if (guess<secret){
            total.setText("BIGGER");
+           total.setVisibility(View.VISIBLE);
+           new AlertDialog.Builder(MainActivity.this)
+                   .setTitle("hahahaha")
+                   .setMessage("Bigger")
+                    .setPositiveButton("ok",null)
+                   .show();
+
        }else if (guess==secret){
+
             total.setText("BINGO");
             reset.setVisibility(View.VISIBLE);
+
+
        }
     }
     @Override
