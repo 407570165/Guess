@@ -1,6 +1,7 @@
 package com.tom.guess;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button reset;
     private TextView counter;
     int vacount;
+    private DialogInterface.OnClickListener dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,41 +54,60 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    public void reset(View view){
+    public void reset(){
         secret =new Random().nextInt(10)+1;
         g.setText("");
         total.setText("");
-        reset.setVisibility(View.GONE);
+        vacount =0;
+        counter.setText(vacount+"");
+
     }
     public void zero(View view){
         int i=0;
 
     }
-    public void turn(View view){
-       int guess=Integer.parseInt(g.getText().toString());
-       total.setAlpha(1.0f);
-       vacount++;
-       counter.setText(vacount+"");
+    public void turn(View view) {
+        int guess = Integer.parseInt(g.getText().toString());
+        total.setAlpha(1.0f);
+        vacount++;
+        counter.setText(vacount + "");
+        DialogInterface.OnClickListener listener =new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                reset();
+            }
+        };
+        String message ="BINGO";
        if (guess>secret){
-           total.setText("SMALLER");
+           message ="SMALLER";
+           listener=null;
+           /*total.setText("SMALLER");
            total.setVisibility(View.VISIBLE);
-           total.animate().alpha(0.0f).setDuration(1200);
+           total.animate().alpha(0.0f).setDuration(1200);*/
        }else if (guess<secret){
-           total.setText("BIGGER");
+           message="BIGGER";
+           listener=null;
+           /*total.setText("BIGGER");
            total.setVisibility(View.VISIBLE);
            new AlertDialog.Builder(MainActivity.this)
                    .setTitle("hahahaha")
                    .setMessage("Bigger")
                     .setPositiveButton("ok",null)
-                   .show();
-
-       }else if (guess==secret){
-
-            total.setText("BINGO");
-            reset.setVisibility(View.VISIBLE);
-
+                   .show();*/
 
        }
+           new AlertDialog.Builder(MainActivity.this)
+                   .setTitle("hahah")
+                   .setMessage(message)
+                   .setPositiveButton("ok", listener).show();
+
+
+/*
+            total.setText("BINGO");
+            reset.setVisibility(View.VISIBLE);
+*/
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
